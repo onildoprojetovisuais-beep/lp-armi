@@ -1,0 +1,182 @@
+/* 06 — Experiência presencial (galeria mosaico + card do próximo evento)
+   Medidas em px do PDF desktop (1920) escaladas por --u; mobile em px do PDF 375 por --v. */
+.s-experiencia {
+  --u: min(calc(100vw / 1920), 1px);
+  position: relative;
+  background: var(--c-bg);
+  color: var(--c-text);
+  padding: calc(56 * var(--u)) 0 calc(15 * var(--u));
+  overflow: hidden;
+}
+
+/* ---------- Cabeçalho ---------- */
+.s-experiencia__head { text-align: center; padding-inline: var(--gutter); }
+.s-experiencia__br-m { display: none; }
+/* linhas do título (máscara de reveal); no mobile cada uma vira uma linha, como no PDF */
+.s-experiencia__line { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 .08em .14em; margin: 0 -.08em -.14em; }
+.s-experiencia__line > span { display: inline-block; }
+.s-experiencia__eyebrow {
+  font-size: max(13px, calc(24 * var(--u)));
+  color: var(--c-gold);
+}
+.s-experiencia__title {
+  margin-top: calc(34 * var(--u));
+  font-family: var(--f-display);
+  font-style: italic;
+  font-weight: 300;
+  font-synthesis: none;
+  font-size: max(34px, calc(69 * var(--u)));
+  line-height: 1.18;
+  letter-spacing: -.01em;
+  color: var(--c-gold);
+  text-wrap: balance;
+}
+.s-experiencia__text {
+  margin: calc(40 * var(--u)) auto 0;
+  max-width: max(320px, calc(790 * var(--u)));
+  font-size: max(15px, calc(25 * var(--u)));
+  line-height: 1.52;
+  color: #d8e4ff;
+  text-wrap: balance;
+}
+
+/* ---------- Galeria (mosaico com posições medidas do PNG do cliente) ---------- */
+.s-experiencia__gallery {
+  position: relative;
+  margin: calc(97 * var(--u)) auto 0;
+  width: calc(1277 * var(--u));
+  aspect-ratio: 4185 / 2143;
+}
+.s-experiencia__gallery--m { display: none; }
+.s-experiencia__tile {
+  position: absolute;
+  left: var(--l); top: var(--t); width: var(--w); height: var(--h);
+  margin: 0;
+  overflow: hidden;
+  border-radius: calc(9 * var(--u));
+  background: #121a26;
+  transform: translateZ(0);
+}
+.s-experiencia__tile img {
+  position: absolute;
+  left: 0; top: -7%;
+  width: 100%; height: 114%;
+  max-width: none;
+  object-fit: cover;
+  will-change: transform;
+}
+@media (hover: hover) and (pointer: fine) {
+  .s-experiencia__tile img { transition: filter .8s var(--ease-out); }
+  .s-experiencia__tile:hover img { filter: brightness(1.08) saturate(1.05); }
+}
+
+/* ---------- Card do próximo evento ---------- */
+.s-experiencia__event {
+  position: relative;
+  width: calc(928 * var(--u));
+  margin: calc(96 * var(--u)) auto 0;
+  padding: calc(47 * var(--u)) var(--gutter) calc(45 * var(--u));
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+}
+.s-experiencia__border {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.s-experiencia__border rect {
+  width: calc(100% - 1px); height: calc(100% - 1px);
+  fill: none;
+  stroke: var(--c-gold);
+  stroke-opacity: .85;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.s-experiencia__icon {
+  width: max(34px, calc(50 * var(--u))); height: auto;
+  fill: var(--c-gold);
+}
+.s-experiencia__event-eyebrow {
+  margin-top: calc(48 * var(--u));
+  margin-right: calc(var(--ls-eyebrow) * -1);
+  font-family: var(--f-eyebrow);
+  font-weight: 500;
+  font-size: max(13px, calc(24 * var(--u)));
+  line-height: 1.35;
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: #d8d8d8;
+}
+.s-experiencia__event-date {
+  margin-top: calc(7 * var(--u));
+  font-family: var(--f-display);
+  font-style: italic;
+  font-weight: 300;
+  font-synthesis: none;
+  font-size: max(32px, calc(70 * var(--u)));
+  line-height: 1.1;
+  letter-spacing: -.01em;
+  color: var(--c-gold);
+}
+.s-experiencia__event-rule {
+  display: block;
+  width: calc(630 * var(--u));
+  max-width: 100%;
+  height: 1px;
+  margin-top: calc(61 * var(--u));
+  background: rgba(216, 216, 216, .75);
+  transform-origin: 50% 50%;
+}
+.s-experiencia__event-note {
+  margin-top: calc(47 * var(--u));
+  font-size: max(15px, calc(25 * var(--u)));
+  line-height: 1.52;
+  color: #d8e4ff;
+}
+
+/* ---------- Tablet ---------- */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .s-experiencia { padding-top: 40px; }
+  .s-experiencia__gallery { width: calc(100vw - 2 * var(--gutter)); margin-top: 56px; }
+  .s-experiencia__event { width: min(640px, calc(100vw - 2 * var(--gutter))); margin-top: 64px; padding-block: 36px; }
+  .s-experiencia__event-eyebrow { margin-top: 28px; }
+  .s-experiencia__event-rule { width: 70%; margin-top: 32px; }
+  .s-experiencia__event-note { margin-top: 24px; }
+}
+
+/* ---------- Mobile (PDF 375) ---------- */
+@media (max-width: 767px) {
+  .s-experiencia {
+    --v: calc(100vw / 375);
+    padding: calc(35 * var(--v)) 0 calc(24 * var(--v));
+  }
+  .s-experiencia__br-m { display: inline; }
+  .s-experiencia__line { display: block; }
+  .s-experiencia__eyebrow { font-size: calc(18.6 * var(--v)); line-height: 1.18; }
+  .s-experiencia__title { margin-top: calc(28 * var(--v)); font-size: calc(38 * var(--v)); line-height: 1.22; }
+  .s-experiencia__text {
+    margin-top: calc(30 * var(--v));
+    max-width: calc(318 * var(--v));
+    font-size: calc(15.3 * var(--v));
+    line-height: 1.5;
+  }
+  .s-experiencia__gallery--d { display: none; }
+  .s-experiencia__gallery--m {
+    display: block;
+    width: calc(368 * var(--v));
+    margin: calc(44 * var(--v)) 0 0 calc(4 * var(--v));
+    aspect-ratio: 1356 / 2828;
+  }
+  .s-experiencia__tile { border-radius: calc(4 * var(--v)); }
+  .s-experiencia__event {
+    width: calc(307 * var(--v));
+    margin-top: calc(50 * var(--v));
+    padding: calc(37 * var(--v)) calc(12 * var(--v)) calc(40 * var(--v));
+  }
+  .s-experiencia__icon { width: calc(37 * var(--v)); }
+  .s-experiencia__event-eyebrow { margin-top: calc(35 * var(--v)); font-size: calc(17.6 * var(--v)); line-height: 1.25; }
+  .s-experiencia__event-date { margin-top: calc(4 * var(--v)); font-size: calc(35.7 * var(--v)); }
+  .s-experiencia__event-rule { width: calc(270 * var(--v)); margin-top: calc(38 * var(--v)); }
+  .s-experiencia__event-note { margin-top: calc(31 * var(--v)); font-size: calc(16 * var(--v)); }
+}

@@ -1,0 +1,182 @@
+/* 08 — O ARMI CLUB é um ambiente de crescimento (prints recriados em HTML)
+   Medidas em unidades do PDF desktop (1920): --u = 1px do PDF escalado à viewport. */
+.s-depoimentos {
+  --u: min(calc(100vw / 1920), 1px);
+  --dep-hl: #fff77c;
+  --dep-ink: #0b0b0c;
+  position: relative;
+  background: var(--c-light-2);
+  color: var(--c-bg);
+  padding: calc(165 * var(--u)) 0 calc(166 * var(--u));
+  overflow: hidden;
+}
+
+/* Cabeçalho */
+.s-depoimentos__head { text-align: center; padding: 0 var(--gutter); }
+.s-depoimentos__title {
+  margin: 0;
+  font-family: var(--f-display);
+  font-weight: 300;
+  font-style: italic; /* Ivy Presto itálico verdadeiro (Fundação) */
+  font-size: max(36px, calc(80 * var(--u)));
+  line-height: .97;
+  letter-spacing: -0.015em;
+  color: var(--c-bg);
+}
+.s-depoimentos__line { display: block; }
+.s-depoimentos__v--m { display: none; }
+.s-depoimentos__lead {
+  margin: calc(32 * var(--u)) auto 0;
+  max-width: max(320px, calc(600 * var(--u)));
+  font-family: var(--f-sans);
+  font-size: max(15px, calc(27 * var(--u)));
+  line-height: 1.52;
+  color: var(--c-bg);
+  text-wrap: balance;
+}
+
+/* Grade / carrossel */
+.s-depoimentos__carousel {
+  position: relative;
+  width: calc(4 * 420 * var(--u) + 3 * 22 * var(--u));
+  max-width: calc(100% - 2 * var(--gutter));
+  margin: calc(100 * var(--u)) auto 0;
+}
+.s-depoimentos__track {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: calc(22 * var(--u));
+  margin: 0; padding: 0; list-style: none;
+  outline: none;
+}
+.s-depoimentos__track:focus-visible { box-shadow: 0 0 0 2px var(--c-gold-deep); border-radius: 12px; }
+.s-depoimentos__item { min-width: 0; display: flex; }
+
+.s-depoimentos__card {
+  flex: 1;
+  margin: 0;
+  min-height: calc(401 * var(--u));
+  padding: calc(30 * var(--u)) calc(29 * var(--u));
+  display: flex; flex-direction: column; justify-content: center;
+  gap: 1.05em;
+  background: #fff;
+  border-radius: calc(30 * var(--u));
+  box-shadow: 0 calc(8 * var(--u)) calc(14 * var(--u)) rgba(0, 0, 0, .22), 0 1px 2px rgba(0, 0, 0, .06);
+  font-family: -apple-system, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: max(14px, calc(22.5 * var(--u)));
+  line-height: 1.25;
+  letter-spacing: -0.003em;
+  color: var(--dep-ink);
+  transition: transform .7s var(--ease-out), box-shadow .7s var(--ease-out);
+  will-change: transform;
+}
+.s-depoimentos__card--dense { font-size: max(13px, calc(20.5 * var(--u))); line-height: 1.26; gap: 1.05em; }
+.s-depoimentos__card p { margin: 0; text-wrap: pretty; }
+
+/* Marca-texto: background "slice" faz a caneta correr linha a linha */
+.s-depoimentos__card mark {
+  --hl: 100%;
+  color: inherit;
+  padding: 0 .06em;
+  margin: 0 -.06em;
+  background-color: transparent;
+  background-image: linear-gradient(100deg, rgba(255, 247, 124, .0) 0, rgba(255, 247, 124, .95) .25em, var(--dep-hl) 50%, rgba(255, 244, 110, .95) calc(100% - .2em), rgba(255, 247, 124, .0) 100%);
+  background-repeat: no-repeat;
+  background-position: 0 55%;
+  background-size: var(--hl) 92%;
+  -webkit-box-decoration-break: slice;
+  box-decoration-break: slice;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .s-depoimentos__card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 calc(26 * var(--u)) calc(40 * var(--u)) rgba(0, 0, 0, .18), 0 2px 6px rgba(0, 0, 0, .06);
+  }
+}
+
+/* Setas e pontos (só mobile) */
+.s-depoimentos__arrow, .s-depoimentos__dots { display: none; }
+
+/* Tablet: 2 × 2 */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .s-depoimentos { --u: calc(100vw / 1300); }
+  .s-depoimentos__carousel { width: min(760px, calc(100% - 2 * var(--gutter))); }
+  .s-depoimentos__track { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .s-depoimentos__card { font-size: 17px; padding: 26px 28px; border-radius: 22px; min-height: 0; }
+}
+
+/* Mobile — 1 card por vez com setas e pontos (PDF mobile) */
+@media (max-width: 767px) {
+  .s-depoimentos {
+    --m: min(calc(100vw / 375), 1.2px);
+    padding: calc(70 * var(--m)) 0 calc(80 * var(--m));
+  }
+  .s-depoimentos__v--d { display: none; }
+  .s-depoimentos__v--m { display: block; }
+  .s-depoimentos__title { font-size: calc(45 * var(--m)); line-height: .98; }
+  .s-depoimentos__lead { margin-top: calc(16 * var(--m)); font-size: 15px; max-width: 270px; }
+  .s-depoimentos__carousel {
+    width: calc(267 * var(--m));
+    max-width: none;
+    margin-top: calc(95 * var(--m));
+  }
+  .s-depoimentos__track {
+    display: flex;
+    gap: 28px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding: 6px 0 26px;
+    margin: -6px 0 -26px;
+  }
+  .s-depoimentos__track::-webkit-scrollbar { display: none; }
+  .s-depoimentos__item { flex: 0 0 100%; scroll-snap-align: center; scroll-snap-stop: always; }
+  .s-depoimentos__card {
+    min-height: calc(256 * var(--m));
+    padding: 18px 20px;
+    border-radius: 16px;
+    font-size: 14.5px;
+    line-height: 1.32;
+    gap: 1.25em;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, .22), 0 1px 2px rgba(0, 0, 0, .06);
+  }
+  .s-depoimentos__card--dense { font-size: 13.5px; }
+
+  .s-depoimentos__arrow {
+    position: absolute; top: calc(50% - 10px); z-index: 2;
+    display: grid; place-items: center;
+    width: 48px; height: 48px; padding: 0; margin: 0;
+    border: 0; border-radius: 50%;
+    transform: translateY(-50%);
+    background: rgba(160, 160, 160, .35);
+    color: #fff; cursor: pointer;
+    transition: opacity .4s var(--ease-out);
+  }
+  .s-depoimentos__arrow::before {
+    content: ""; position: absolute; inset: 16%; border-radius: 50%;
+    background: rgba(140, 140, 140, .55);
+  }
+  .s-depoimentos__arrow svg { position: relative; width: 30%; height: 30%; fill: none; stroke: currentColor; stroke-width: 1.5; }
+  .s-depoimentos__arrow--prev { right: calc(100% - 10px); }
+  .s-depoimentos__arrow--next { left: calc(100% - 10px); }
+  .s-depoimentos__arrow[aria-disabled="true"] { opacity: .35; cursor: default; }
+  .s-depoimentos__arrow:focus-visible { outline: 2px solid var(--c-gold-deep); outline-offset: 3px; }
+
+  .s-depoimentos__dots {
+    display: flex; justify-content: center; gap: calc(13 * var(--m));
+    margin-top: calc(70 * var(--m));
+  }
+  .s-depoimentos__dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: #b1b1b1;
+    transition: background-color .5s var(--ease-out), transform .5s var(--ease-out);
+  }
+  .s-depoimentos__dot.is-active { background: #6f6f6f; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s-depoimentos__card { transition: none; }
+  .s-depoimentos__track { scroll-behavior: auto; }
+}

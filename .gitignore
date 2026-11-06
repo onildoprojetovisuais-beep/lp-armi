@@ -1,0 +1,8 @@
+node_modules/
+.vercel/
+.DS_Store
+Thumbs.db
+
+# material de trabalho (não vai para o repositório)
+layout/
+_ref/

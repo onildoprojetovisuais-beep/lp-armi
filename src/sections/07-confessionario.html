@@ -1,0 +1,72 @@
+<section class="s-confessionario" id="confessionario" aria-labelledby="confessionario-titulo">
+  <div class="s-confessionario__inner">
+    <header class="s-confessionario__head">
+      <h2 class="s-confessionario__title" id="confessionario-titulo"><span class="s-confessionario__line">Momento</span> <span class="s-confessionario__line">Confessionário</span></h2>
+      <p class="s-confessionario__lead">No evento presencial ARMI um dos momentos mais marcantes foi o&nbsp;nosso confessionário. Os participantes podiam falar abertamente sobre seus sentimentos e&nbsp;aquilo que os motiva a&nbsp;continuar.</p>
+    </header>
+
+    <div class="s-confessionario__carousel" data-conf-carousel>
+      <button class="s-confessionario__arrow s-confessionario__arrow--prev" type="button" data-conf-prev aria-label="Depoimento anterior">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4 7 12l8 8"/></svg>
+      </button>
+
+      <div class="s-confessionario__viewport" tabindex="0" role="region" aria-roledescription="carrossel" aria-label="Depoimentos do confessionário — use as setas do teclado para navegar" data-conf-viewport>
+        <ul class="s-confessionario__track" data-conf-track>
+          <!-- Fallback sem JS. Com JS, os cards são renderizados a partir do array CONFESSIONARIO em js/sections/07-confessionario.js -->
+          <li class="s-confessionario__slide">
+            <article class="s-confessionario__card">
+              <div class="s-confessionario__thumb">
+                <img src="assets/img/extraido/confessionario-1.webp" width="960" height="693" alt="Participante sentada na poltrona do confessionário do evento ARMI" loading="lazy" decoding="async">
+              </div>
+              <div class="s-confessionario__body">
+                <p class="s-confessionario__name">Participante</p>
+                <p class="s-confessionario__role">Especialização</p>
+                <blockquote class="s-confessionario__quote"><p>“trecho marcante do depoimento do participante no confessionário no evento presencial&nbsp;ARMI.”</p></blockquote>
+              </div>
+            </article>
+          </li>
+          <li class="s-confessionario__slide">
+            <article class="s-confessionario__card">
+              <div class="s-confessionario__thumb">
+                <img src="assets/img/extraido/confessionario-2.webp" width="960" height="693" alt="Participante sentado na poltrona do confessionário do evento ARMI" loading="lazy" decoding="async">
+              </div>
+              <div class="s-confessionario__body">
+                <p class="s-confessionario__name">Participante</p>
+                <p class="s-confessionario__role">Especialização</p>
+                <blockquote class="s-confessionario__quote"><p>“trecho marcante do depoimento do participante no confessionário no evento presencial&nbsp;ARMI.”</p></blockquote>
+              </div>
+            </article>
+          </li>
+          <li class="s-confessionario__slide">
+            <article class="s-confessionario__card">
+              <div class="s-confessionario__thumb">
+                <img src="assets/img/extraido/confessionario-3.webp" width="960" height="693" alt="Participante de terno sentado na poltrona do confessionário do evento ARMI" loading="lazy" decoding="async">
+              </div>
+              <div class="s-confessionario__body">
+                <p class="s-confessionario__name">Participante</p>
+                <p class="s-confessionario__role">Especialização</p>
+                <blockquote class="s-confessionario__quote"><p>“trecho marcante do depoimento do participante no confessionário no evento presencial&nbsp;ARMI.”</p></blockquote>
+              </div>
+            </article>
+          </li>
+        </ul>
+      </div>
+
+      <button class="s-confessionario__arrow s-confessionario__arrow--next" type="button" data-conf-next aria-label="Próximo depoimento">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 4 8 8-8 8"/></svg>
+      </button>
+
+      <div class="s-confessionario__dots" data-conf-dots aria-hidden="true"></div>
+      <p class="s-confessionario__sr" aria-live="polite" data-conf-live></p>
+    </div>
+  </div>
+
+  <dialog class="s-confessionario__modal" data-conf-modal aria-label="Vídeo do confessionário">
+    <div class="s-confessionario__modal-box">
+      <button class="s-confessionario__modal-close" type="button" data-conf-close aria-label="Fechar vídeo">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
+      </button>
+      <div class="s-confessionario__modal-media" data-conf-media></div>
+    </div>
+  </dialog>
+</section>

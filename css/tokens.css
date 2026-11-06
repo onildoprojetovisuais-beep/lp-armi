@@ -1,0 +1,97 @@
+/* ==========================================================================
+   ARMI Club — Tokens (Fundação)
+   Valores medidos no PDF (desktop 1920 / mobile 375) com PyMuPDF.
+   Nomes de variáveis são CONTRATO: pode mudar valor, nunca nome.
+   ========================================================================== */
+
+/* ---------- Fontes (WOFF2, subset latim) ----------
+   Ivy Presto: os arquivos SÃO itálicos verdadeiros (italicAngle -12°), por isso
+   são declarados com font-style: italic. Nunca aplicar itálico sintético.
+   - Ivy Presto Display Light Italic (300)  -> títulos principais do layout
+   - Ivy Presto Display Bold Italic   (700)  -> títulos pesados (pilares, números)
+   - Ivy Presto Headline Bold Italic  (700)  -> alternativa ao Display Bold
+   - Ivy Presto Text Bold             (700, romano) -> único romano Ivy disponível
+*/
+@font-face { font-family: 'Ivy Presto Display'; src: url('../assets/fonts/ivy-presto-display-light-italic.woff2') format('woff2'); font-weight: 300; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Ivy Presto Display'; src: url('../assets/fonts/ivy-presto-display-bold-italic.woff2') format('woff2'); font-weight: 600 800; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Ivy Presto Headline'; src: url('../assets/fonts/ivy-presto-headline-bold-italic.woff2') format('woff2'); font-weight: 700; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Ivy Presto Text'; src: url('../assets/fonts/ivy-presto-text-bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Satoshi'; src: url('../assets/fonts/satoshi-300.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Satoshi'; src: url('../assets/fonts/satoshi-400.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Satoshi'; src: url('../assets/fonts/satoshi-400-italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Satoshi'; src: url('../assets/fonts/satoshi-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Satoshi'; src: url('../assets/fonts/satoshi-700.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Satoshi'; src: url('../assets/fonts/satoshi-900.woff2') format('woff2'); font-weight: 900; font-style: normal; font-display: swap; }
+
+:root {
+  /* ---------- Cores (medidas no PDF) ---------- */
+  --c-bg: #080f18;          /* azul-noite de todas as dobras escuras (hero, experiência, jornada) */
+  --c-bg-2: #0d1520;        /* variação levemente mais clara p/ cards/realces sobre o fundo */
+  --c-bg-deep: #05060a;     /* fundo da dobra final (mais profundo, quase preto) */
+  --c-surface: #11161f;     /* cards escuros (jornada, confessionário) */
+  --c-surface-glass: rgba(18, 22, 30, .55); /* card de vidro (barra de números, card ARMI CLUB) */
+  --c-line: rgba(255,255,255,.12);
+  --c-line-gold: rgba(207,189,144,.45); /* linhas/bordas douradas finas (card próximo evento, divisores) */
+  --c-light: #d8d8d8;       /* cinza da dobra "Nosso propósito" */
+  --c-light-2: #e6e6e6;     /* cinza da dobra de depoimentos */
+  --c-white: #ffffff;       /* fundo da dobra dos fundadores */
+  --c-ink: #080f18;         /* texto escuro nas dobras claras (mesmo azul-noite) */
+  --c-ink-dim: #3a4049;     /* corpo secundário em dobra clara (AA sobre #d8d8d8) */
+  --c-text: #f3f1ec;        /* corpo sobre fundo escuro (branco levemente quente) */
+  --c-text-dim: #a7a8ab;    /* legendas/rodapé sobre escuro */
+  --c-gold: #cfbd90;        /* dourado chapado dos títulos (medido: #cfbd90) */
+  --c-gold-deep: #977535;   /* dourado escuro: início do degradê do botão */
+  --c-gold-soft: #e3d4ab;   /* dourado claro p/ brilhos/realces */
+  --c-glow: rgba(207,189,144,.18); /* halo dourado difuso (cantos das dobras escuras) */
+
+  /* Botão "QUERO APLICAR": #977535 chapado até ~40%, abrindo para #cebb8d na ponta direita */
+  --g-gold: linear-gradient(90deg, #977535 0%, #987637 38%, #ad9054 66%, #c7b281 88%, #d0be90 100%);
+  /* Texto dourado com leve volume (títulos com destaque) */
+  --g-gold-text: linear-gradient(180deg, #e8dab3 0%, #cfbd90 48%, #a98c50 100%);
+  /* Linha/divisor dourado que some nas pontas */
+  --g-gold-line: linear-gradient(90deg, transparent, #cfbd90 20%, #cfbd90 80%, transparent);
+
+  /* ---------- Famílias ---------- */
+  --f-display: 'Ivy Presto Display', 'Ivy Presto Headline', 'Times New Roman', serif; /* sempre itálico */
+  --f-serif: 'Ivy Presto Text', 'Times New Roman', serif;   /* romano (só Bold disponível) */
+  --f-eyebrow: 'Cormorant Garamond', 'Ivy Presto Text', 'Times New Roman', serif; /* romano leve p/ caixa-alta espaçada (substituto do Ivy Text Regular) */
+  --f-sans: 'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* ---------- Escala tipográfica fluida (375 -> 1920, medida no PDF) ---------- */
+  --fs-display: clamp(2.562rem, 2.047rem + 2.201vw, 4.688rem);  /* 41 -> 75px  hero */
+  --fs-h2:      clamp(2.75rem, 2.371rem + 1.618vw, 4.312rem);   /* 44 -> 69px  títulos de dobra */
+  --fs-h2-lg:   clamp(2.812rem, 2.206rem + 2.589vw, 5.312rem);  /* 45 -> 85px  "Nosso propósito", "Os pilares", nomes fundadores */
+  --fs-h3:      clamp(1.875rem, 1.572rem + 1.294vw, 3.125rem);  /* 30 -> 50px  pilares, números, subtítulos */
+  --fs-lead:    clamp(1.094rem, 0.8586rem + 1.003vw, 2.062rem); /* 17.5 -> 33px subtítulo do hero */
+  --fs-body:    clamp(1rem, 0.8635rem + 0.5825vw, 1.562rem);    /* 16 -> 25px  corpo */
+  --fs-small:   clamp(0.875rem, 0.784rem + 0.3883vw, 1.25rem);  /* 14 -> 20px  legendas */
+  --fs-eyebrow: clamp(1.062rem, 0.9563rem + 0.4531vw, 1.5rem);  /* 17 -> 24px  caixa alta espaçada */
+  --fs-btn:     clamp(1.062rem, 0.9184rem + 0.6149vw, 1.656rem);/* 17 -> 26.5px */
+  --lh-tight: 1.18;  /* títulos (PDF: 91/75 = 1.21) */
+  --lh-snug: 1.3;
+  --lh-body: 1.5;    /* PDF desktop 38/25 = 1.52 */
+  --ls-eyebrow: .28em;
+
+  /* ---------- Espaçamentos ---------- */
+  --space-section: clamp(4rem, 2.695rem + 5.566vw, 9.375rem);   /* 64 -> 150px padding vertical das dobras */
+  --space-block:   clamp(2rem, 1.393rem + 2.589vw, 4.5rem);     /* 32 -> 72px título -> conteúdo */
+  --space-stack:   clamp(1rem, 0.818rem + 0.7767vw, 1.75rem);   /* 16 -> 28px entre parágrafos/itens */
+  --space-xs: .5rem; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2.5rem; --space-xl: 4rem;
+
+  /* ---------- Layout ---------- */
+  --container: 1280px;      /* coluna útil do PDF: x 320 -> 1600 em 1920 */
+  --container-narrow: 860px;
+  --gutter: clamp(16px, 4vw, 40px);
+
+  /* ---------- Botão ---------- */
+  --btn-h: clamp(3.125rem, 2.943rem + 0.7767vw, 3.875rem);   /* 50 -> 62px */
+  --btn-px: clamp(1.75rem, 1.325rem + 1.812vw, 3.5rem);      /* 28 -> 56px */
+
+  /* ---------- Raios, sombras, motion ---------- */
+  --radius-sm: 6px; --radius: 12px; --radius-lg: 18px;
+  --shadow-card: 0 20px 60px -20px rgba(0,0,0,.55);
+  --shadow-gold: 0 14px 40px -14px rgba(151,117,53,.65);
+  --ease-out: cubic-bezier(.16,1,.3,1); --ease-io: cubic-bezier(.65,0,.35,1);
+  --dur-fast: .25s; --dur: .6s; --dur-slow: 1.1s;
+  --z-base: 1; --z-raised: 10; --z-sticky: 100; --z-modal: 1000;
+}

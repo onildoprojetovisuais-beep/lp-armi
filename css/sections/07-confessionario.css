@@ -1,0 +1,326 @@
+/* 07 — Momento Confessionário
+   Medidas em unidades do PDF desktop (1920): --u = 1px do PDF escalado à viewport. */
+.s-confessionario {
+  --u: min(calc(100vw / 1920), 1px);
+  --conf-gold: var(--c-gold);
+  --conf-card-w: calc(427 * var(--u));
+  --conf-gap: calc(40 * var(--u));
+  position: relative;
+  background: var(--c-bg);
+  color: var(--c-text);
+  padding: calc(130 * var(--u)) 0 calc(238 * var(--u));
+  overflow: hidden;
+}
+.s-confessionario__inner { position: relative; max-width: 1920px; margin: 0 auto; }
+
+/* Cabeçalho */
+.s-confessionario__head { text-align: center; padding: 0 var(--gutter); }
+.s-confessionario__title {
+  margin: 0;
+  font-family: var(--f-display);
+  font-weight: 300;
+  font-style: italic; /* Ivy Presto itálico verdadeiro (Fundação) */
+  font-size: max(34px, calc(69 * var(--u)));
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--conf-gold);
+}
+.s-confessionario__line { display: inline-block; }
+.s-confessionario__lead {
+  margin: calc(40 * var(--u)) auto 0;
+  max-width: max(320px, calc(800 * var(--u)));
+  font-family: var(--f-sans);
+  font-size: max(15px, calc(25 * var(--u)));
+  line-height: 1.52;
+  color: #d9e4ff;
+  text-wrap: balance;
+}
+
+/* Carrossel */
+.s-confessionario__carousel {
+  position: relative;
+  margin: calc(80 * var(--u)) auto 0;
+  width: calc(3 * var(--conf-card-w) + 2 * var(--conf-gap));
+}
+.s-confessionario__viewport {
+  overflow: hidden;
+  padding: 14px 0 20px;
+  margin: -14px 0 -20px;
+  border-radius: calc(22 * var(--u));
+  touch-action: pan-y;
+  cursor: grab;
+  outline: none;
+}
+.s-confessionario__viewport:focus-visible { box-shadow: 0 0 0 2px var(--conf-gold); }
+.s-confessionario__viewport.is-dragging { cursor: grabbing; }
+.s-confessionario__track {
+  display: flex;
+  gap: var(--conf-gap);
+  margin: 0; padding: 0; list-style: none;
+  will-change: transform;
+}
+.s-confessionario__slide { flex: 0 0 var(--conf-card-w); min-width: 0; }
+
+/* Card */
+.s-confessionario__card {
+  position: relative;
+  height: 100%;
+  min-height: calc(527 * var(--u));
+  display: flex; flex-direction: column;
+  border: 1px solid var(--conf-gold);
+  border-radius: calc(22 * var(--u));
+  background: var(--c-bg);
+  overflow: hidden;
+  transition: transform .7s var(--ease-out), box-shadow .7s var(--ease-out);
+}
+.s-confessionario__thumb {
+  position: relative;
+  aspect-ratio: 425 / 307;
+  margin: -1px -1px 0;
+  overflow: hidden;
+  border-radius: calc(22 * var(--u)) calc(22 * var(--u)) calc(22 * var(--u)) calc(22 * var(--u));
+  background: #1a1f27;
+  isolation: isolate;
+}
+.s-confessionario__thumb img {
+  display: block; width: 100%; height: 100%;
+  object-fit: cover;
+  transform: scale(1.001);
+  transition: transform 2.4s var(--ease-out), filter 1.2s var(--ease-out);
+  -webkit-user-drag: none; user-select: none;
+}
+.s-confessionario__thumb::after { /* leve vinheta para o play respirar */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(60% 60% at 50% 50%, transparent 40%, rgba(8, 15, 24, .28) 100%);
+}
+
+/* Play */
+.s-confessionario__play {
+  position: absolute; left: 50%; top: 50%; z-index: 2;
+  width: max(48px, calc(82 * var(--u))); height: max(48px, calc(82 * var(--u)));
+  margin: 0; padding: 0;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--conf-gold);
+  border-radius: 50%;
+  background: rgba(8, 15, 25, .72);
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  color: #e6e6e6;
+  cursor: pointer;
+  display: grid; place-items: center;
+  transition: background-color .5s var(--ease-out), transform .6s var(--ease-out);
+}
+.s-confessionario__play svg { width: 30%; height: 30%; margin-left: 8%; fill: currentColor; }
+.s-confessionario__play::before { /* anel dourado pulsante (hover) */
+  content: ""; position: absolute; inset: -1px; border-radius: 50%;
+  border: 1px solid var(--conf-gold);
+  opacity: 0; transform: scale(1);
+  pointer-events: none;
+}
+.s-confessionario__play:focus-visible { outline: 2px solid var(--conf-gold); outline-offset: 4px; }
+.s-confessionario__play[aria-disabled="true"] { cursor: default; }
+.s-confessionario__soon {
+  position: absolute; left: 50%; top: calc(50% + max(32px, calc(56 * var(--u)))); z-index: 2;
+  transform: translate(-50%, 4px);
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(8, 15, 25, .78);
+  border: 1px solid rgba(201, 173, 110, .45);
+  font: 500 11px/1.2 var(--f-sans);
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--conf-gold);
+  white-space: nowrap;
+  opacity: 0; pointer-events: none;
+  transition: opacity .4s var(--ease-out), transform .5s var(--ease-out);
+}
+
+/* Corpo do card */
+.s-confessionario__body {
+  position: relative;
+  flex: 1;
+  padding: calc(33 * var(--u)) calc(27 * var(--u)) calc(44 * var(--u));
+}
+.s-confessionario__name {
+  margin: 0;
+  font-family: var(--f-display);
+  font-weight: 300;
+  font-style: italic;
+  font-size: max(19px, calc(30 * var(--u)));
+  line-height: 1;
+  color: var(--conf-gold);
+}
+.s-confessionario__role {
+  margin: max(5px, calc(8 * var(--u))) 0 0;
+  font-family: var(--f-sans);
+  font-size: max(10px, calc(11 * var(--u)));
+  line-height: 1.2;
+  color: #c0c0c0;
+}
+.s-confessionario__quote {
+  position: relative;
+  margin: max(10px, calc(13 * var(--u))) 0 0;
+  padding-top: max(12px, calc(19 * var(--u)));
+  max-width: 16.4em;
+  font-size: max(13px, calc(16.8 * var(--u)));
+}
+.s-confessionario__quote::before { /* linha dourada */
+  content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 1px;
+  background: var(--conf-gold);
+  transform-origin: left center;
+  transform: scaleX(var(--conf-line, 1));
+}
+.s-confessionario__quote p {
+  margin: 0;
+  font-family: var(--f-sans);
+  font-size: 1em;
+  line-height: 1.45;
+  color: var(--c-white);
+  text-wrap: pretty;
+}
+.s-confessionario__marks {
+  position: absolute;
+  right: calc(29 * var(--u)); top: calc(27 * var(--u));
+  width: max(30px, calc(47 * var(--u))); height: auto;
+  overflow: visible;
+}
+.s-confessionario__marks path {
+  fill: var(--conf-gold);
+  stroke: var(--conf-gold);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+/* Setas */
+.s-confessionario__arrow {
+  position: absolute; top: 50%; z-index: 3;
+  width: max(48px, calc(94 * var(--u))); height: max(48px, calc(94 * var(--u)));
+  margin: 0; padding: 0;
+  border: 0; border-radius: 50%;
+  transform: translateY(-50%);
+  background: rgba(88, 88, 88, .16);
+  color: #fff;
+  cursor: pointer;
+  display: grid; place-items: center;
+  transition: background-color .4s var(--ease-out);
+}
+.s-confessionario__arrow::before {
+  content: ""; position: absolute; inset: 16%;
+  border-radius: 50%;
+  background: rgba(88, 88, 88, .30);
+  transition: transform .5s var(--ease-out), background-color .4s var(--ease-out);
+}
+.s-confessionario__arrow svg {
+  position: relative; width: 30%; height: 30%;
+  fill: none; stroke: currentColor; stroke-width: 1.4;
+  transition: transform .5s var(--ease-out);
+}
+.s-confessionario__arrow--prev { right: calc(100% + 47 * var(--u)); }
+.s-confessionario__arrow--next { left: calc(100% + 47 * var(--u)); }
+.s-confessionario__arrow:focus-visible { outline: 2px solid var(--conf-gold); outline-offset: 3px; }
+
+.s-confessionario__dots { display: none; }
+.s-confessionario__sr {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+/* Hover (apenas dispositivos com mouse) */
+@media (hover: hover) and (pointer: fine) {
+  .s-confessionario__card:hover { transform: translateY(-6px); box-shadow: 0 24px 50px -24px rgba(0, 0, 0, .8), 0 0 0 1px rgba(201, 173, 110, .25); }
+  .s-confessionario__card:hover .s-confessionario__thumb img { transform: scale(1.07); }
+  .s-confessionario__card:hover .s-confessionario__play:not([aria-disabled="true"]) { background: rgba(8, 15, 25, .5); }
+  .s-confessionario__card:hover .s-confessionario__play:not([aria-disabled="true"])::before { animation: s-confessionario-pulse 1.8s var(--ease-out) infinite; }
+  .s-confessionario__play[aria-disabled="true"]:hover + .s-confessionario__soon { opacity: 1; transform: translate(-50%, 0); }
+  .s-confessionario__arrow:hover::before { transform: scale(1.08); background: rgba(201, 173, 110, .28); }
+  .s-confessionario__arrow--prev:hover svg { transform: translateX(-2px); }
+  .s-confessionario__arrow--next:hover svg { transform: translateX(2px); }
+}
+.s-confessionario__play[aria-disabled="true"]:focus-visible + .s-confessionario__soon,
+.s-confessionario__soon.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+@keyframes s-confessionario-pulse {
+  0% { opacity: .9; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.55); }
+}
+
+/* Modal de vídeo */
+.s-confessionario__modal {
+  position: fixed; inset: 0;
+  margin: auto;
+  height: fit-content;
+  width: min(92vw, 1100px, calc((100dvh - 160px) * 16 / 9));
+  max-width: none; max-height: none;
+  padding: 0; border: 0;
+  background: transparent;
+  color: var(--c-text);
+  overflow: visible;
+}
+.s-confessionario__modal::backdrop { background: rgba(4, 7, 12, .86); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.s-confessionario__modal-box { position: relative; }
+.s-confessionario__modal-media {
+  position: relative; aspect-ratio: 16 / 9;
+  border: 1px solid rgba(201, 173, 110, .5);
+  border-radius: var(--radius);
+  overflow: hidden; background: #000;
+}
+.s-confessionario__modal-media iframe,
+.s-confessionario__modal-media video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.s-confessionario__modal-close {
+  position: absolute; right: 0; top: -56px;
+  width: 44px; height: 44px; padding: 0;
+  border: 1px solid rgba(201, 173, 110, .6); border-radius: 50%;
+  background: rgba(8, 15, 25, .6); color: #fff; cursor: pointer;
+  display: grid; place-items: center;
+}
+.s-confessionario__modal-close svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+.s-confessionario__modal-close:focus-visible { outline: 2px solid var(--conf-gold); outline-offset: 3px; }
+.s-confessionario__modal[open] .s-confessionario__modal-box { animation: s-confessionario-in .6s var(--ease-out); }
+@keyframes s-confessionario-in { from { opacity: 0; transform: translateY(16px) scale(.97); } to { opacity: 1; transform: none; } }
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .s-confessionario { --u: calc(100vw / 1400); }
+  .s-confessionario__arrow--prev { right: auto; left: calc(-1 * max(48px, calc(94 * var(--u))) - 8px); }
+  .s-confessionario__arrow--next { left: auto; right: calc(-1 * max(48px, calc(94 * var(--u))) - 8px); }
+  .s-confessionario__carousel { width: calc(100% - 2 * var(--gutter) - 2 * max(48px, calc(94 * var(--u)))); }
+  .s-confessionario { --conf-card-w: calc((100vw - 2 * var(--gutter) - 2 * max(48px, calc(94 * (100vw / 1400))) - 2 * var(--conf-gap)) / 3); }
+}
+
+/* Mobile — 1 card por vez (PDF mobile) */
+@media (max-width: 767px) {
+  .s-confessionario {
+    --m: min(calc(100vw / 375), 1.2px);
+    --conf-card-w: calc(246 * var(--m));
+    --conf-gap: 24px;
+    padding: calc(60 * var(--m)) 0 calc(70 * var(--m));
+  }
+  .s-confessionario__title { font-size: calc(33 * var(--m)); line-height: 1.04; }
+  .s-confessionario__line { display: block; }
+  .s-confessionario__lead { margin-top: calc(20 * var(--m)); font-size: 14px; line-height: 1.5; max-width: 360px; }
+  .s-confessionario__carousel { width: var(--conf-card-w); margin-top: calc(40 * var(--m)); }
+  .s-confessionario__viewport { border-radius: 16px; padding: 10px 0 14px; margin: -10px 0 -14px; }
+  .s-confessionario__card { min-height: 0; border-radius: 16px; }
+  .s-confessionario__thumb { border-radius: 16px; }
+  .s-confessionario__body { padding: 16px 16px 26px; }
+  .s-confessionario__name { font-size: calc(20 * var(--m)); }
+  .s-confessionario__role { font-size: 10px; margin-top: 5px; }
+  .s-confessionario__marks { width: calc(29 * var(--m)); right: 16px; top: 16px; }
+  .s-confessionario__quote { max-width: 16.4em; margin-top: 10px; padding-top: 14px; font-size: 13px; }
+  .s-confessionario__play { width: 48px; height: 48px; }
+  .s-confessionario__arrow { width: 48px; height: 48px; top: 50%; }
+  .s-confessionario__arrow--prev { right: calc(100% - 10px); }
+  .s-confessionario__arrow--next { left: calc(100% - 10px); }
+  .s-confessionario__dots {
+    display: flex; justify-content: center; gap: calc(13 * var(--m));
+    margin-top: calc(48 * var(--m));
+  }
+  .s-confessionario__dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: #4a4d52;
+    transition: background-color .5s var(--ease-out), transform .5s var(--ease-out);
+  }
+  .s-confessionario__dot.is-active { background: #8a8b8d; transform: scale(1.1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s-confessionario *, .s-confessionario *::before { transition: none !important; animation: none !important; }
+}

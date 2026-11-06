@@ -1,0 +1,214 @@
+/* ==========================================================================
+   02 · PROPÓSITO — dobra clara + barra de números em vidro.
+   --u = 1px do layout original (desktop 1920 a partir de 1200px; abaixo,
+   composição empilhada baseada no mobile 375, ampliada até 600px).
+   A barra de números sobrepõe a divisa com a seção seguinte por posição
+   absoluta dentro DESTA seção (z-index próprio, sem depender do CSS vizinho).
+   ========================================================================== */
+.s-proposito {
+  --u: calc(min(100vw, 600px) / 375);
+  position: relative;
+  z-index: 3;
+  background: var(--c-light);
+  color: var(--c-ink);
+  overflow-x: clip;
+}
+.s-proposito__frame {
+  position: relative;
+  width: calc(375 * var(--u));
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Texto ---------- */
+.s-proposito__text {
+  order: 1;
+  padding: calc(56 * var(--u)) calc(16 * var(--u)) 0;
+  text-align: center;
+}
+.s-proposito__title {
+  font-size: calc(45 * var(--u));
+  line-height: 1.1;
+  letter-spacing: -.015em;
+  color: var(--c-ink);
+}
+.s-proposito__body {
+  margin-top: calc(22 * var(--u));
+  font-family: var(--f-sans);
+  font-weight: 400;
+  font-size: calc(16 * var(--u));
+  line-height: calc(24 * var(--u));
+  color: #0b0d12;
+}
+.s-proposito__body p { white-space: nowrap; text-wrap: nowrap; }
+.s-proposito__body p + p { margin-top: calc(16 * var(--u)); }
+.s-proposito__br-d { display: none; }
+
+.s-proposito__quote {
+  margin-top: calc(28 * var(--u));
+  font-size: calc(26 * var(--u));
+  line-height: calc(32 * var(--u));
+  letter-spacing: -.01em;
+  color: var(--c-ink);
+}
+.s-proposito__ln {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0 .08em .14em;
+  margin: 0 -.08em -.14em;
+}
+.s-proposito__ln-i { display: inline-block; }
+
+/* ---------- Foto ---------- */
+.s-proposito__media {
+  order: 2;
+  position: relative;
+  margin-top: calc(40 * var(--u));
+  width: calc(375 * var(--u));
+  aspect-ratio: 1125 / 1524;
+}
+/* faixa dourada continua até as bordas quando a tela é mais larga que a foto */
+@media (min-width: 601px) { .s-proposito__media::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 100vw;
+  translate: -50% 0;
+  top: calc(104 * var(--u));
+  height: calc(8.2 * var(--u));
+  background: var(--c-gold);
+} }
+.s-proposito__media-par {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.s-proposito__media-par picture {
+  position: absolute;
+  inset: 0 0 -6% 0;
+  display: block;
+  will-change: transform;
+}
+.s-proposito__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+@media (min-width: 601px) and (max-width: 1199px) {
+  .s-proposito__media-par {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  }
+}
+
+/* ---------- Barra de números (vidro fosco escuro) ---------- */
+.s-proposito .s-proposito__stats {
+  position: absolute;
+  z-index: 4;
+  left: calc(14 * var(--u));
+  right: calc(14 * var(--u));
+  bottom: calc(-58 * var(--u));
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0;
+  padding: calc(18 * var(--u)) calc(6 * var(--u));
+  list-style: none;
+  border-radius: calc(12 * var(--u));
+  background: linear-gradient(180deg, rgba(10,13,19,.52) 0%, rgba(8,11,16,.72) 100%);
+  -webkit-backdrop-filter: blur(22px) saturate(1.2);
+  backdrop-filter: blur(22px) saturate(1.2);
+  border: 1px solid rgba(255,255,255,.1);
+  box-shadow: 0 30px 70px -24px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.09);
+  color: #fbf7ee;
+  text-align: center;
+}
+.s-proposito__stat { position: relative; padding-inline: calc(4 * var(--u)); }
+.s-proposito__stat + .s-proposito__stat::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 4%; bottom: 4%;
+  width: 1px;
+  background: var(--c-gold);
+}
+.s-proposito__num {
+  font-family: var(--f-display);
+  font-style: italic;
+  font-weight: 700;
+  font-synthesis: none;
+  font-size: calc(24 * var(--u));
+  line-height: 1;
+  color: var(--c-gold);
+  white-space: nowrap;
+}
+.s-proposito__count { display: inline-block; text-align: right; }
+.s-proposito__label {
+  margin-top: calc(9 * var(--u));
+  font-family: var(--f-sans);
+  font-size: max(11px, calc(12 * var(--u)));
+  line-height: 1.4;
+  color: #fbf7ee;
+}
+
+/* ---------- Desktop ---------- */
+@media (min-width: 1200px) {
+  .s-proposito { --u: calc(min(100vw, 1920px) / 1920); }
+  .s-proposito__frame {
+    display: block;
+    width: calc(1920 * var(--u));
+    min-height: calc(1173 * var(--u));
+  }
+  .s-proposito__media {
+    position: absolute;
+    left: 0; top: 0;
+    margin: 0;
+    width: calc(1100 * var(--u));
+    height: calc(1173 * var(--u));
+    aspect-ratio: auto;
+  }
+  .s-proposito__media::before { display: none; }
+  .s-proposito__img { object-position: left top; }
+
+  .s-proposito__text {
+    position: relative;
+    margin-left: calc(1084 * var(--u));
+    padding: calc(118 * var(--u)) 0 calc(150 * var(--u));
+    text-align: left;
+  }
+  .s-proposito__title { font-size: calc(84.7 * var(--u)); line-height: calc(93 * var(--u)); }
+  .s-proposito__body {
+    margin-top: calc(34 * var(--u));
+    font-size: calc(25 * var(--u));
+    line-height: calc(38 * var(--u));
+  }
+  .s-proposito__body p + p { margin-top: calc(38 * var(--u)); }
+  .s-proposito__br-d { display: inline; }
+  .s-proposito__br-m { display: none; }
+  .s-proposito__quote {
+    margin-top: calc(25 * var(--u));
+    font-size: calc(45 * var(--u));
+    line-height: calc(60 * var(--u));
+  }
+
+  .s-proposito .s-proposito__stats {
+    left: calc(320 * var(--u));
+    right: auto;
+    top: calc(1066 * var(--u));
+    bottom: auto;
+    width: calc(1280 * var(--u));
+    height: calc(232 * var(--u));
+    padding: calc(41 * var(--u)) calc(132 * var(--u)) 0;
+    border-radius: calc(20 * var(--u));
+    align-items: start;
+  }
+  .s-proposito__stat { height: calc(149 * var(--u)); padding: 0; }
+  .s-proposito__stat + .s-proposito__stat::before { top: 0; bottom: 0; }
+  .s-proposito__num { font-size: calc(50 * var(--u)); line-height: calc(50 * var(--u)); margin-top: calc(-3 * var(--u)); }
+  .s-proposito__label {
+    margin-top: calc(24.5 * var(--u));
+    font-size: calc(25 * var(--u));
+    line-height: calc(38 * var(--u));
+  }
+}

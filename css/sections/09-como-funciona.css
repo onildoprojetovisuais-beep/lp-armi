@@ -1,0 +1,273 @@
+/* 09 — Como funciona o ARMI Club (infográfico interativo)
+   Coordenadas do desktop em "unidades de design" (--u) do PDF de 1920:
+   o palco representa x 120→1800 e y 270→1100 da seção (1680 × 830). */
+
+.s-como-funciona {
+  --cf-gold: #cfbd90;            /* dourado amostrado do PDF (etiquetas, título, linha) */
+  --cf-pin: #b3b3b3;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--c-bg);
+  color: var(--c-white);
+  padding: clamp(64px, 5.6vw, 106px) 0 clamp(56px, 5.2vw, 100px);
+  border-bottom: 2px solid var(--cf-gold);
+}
+
+/* brilho dourado ambiente no canto superior esquerdo */
+.s-como-funciona .cf-ambient {
+  position: absolute;
+  z-index: -1;
+  left: -32vw;
+  top: -15vw;
+  width: 70vw;
+  height: 38vw;
+  min-width: 520px;
+  min-height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(207, 189, 144, .5), rgba(207, 189, 144, .16) 52%, rgba(207, 189, 144, 0) 100%);
+  pointer-events: none;
+}
+
+.s-como-funciona .cf-head {
+  position: relative;
+  padding: 0 var(--gutter);
+  text-align: center;
+}
+
+.s-como-funciona .cf-title {
+  margin: 0;
+  font-family: var(--f-display);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(40px, 3.6vw, 69px);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--cf-gold);
+  text-wrap: balance;
+}
+.s-como-funciona .cf-br-m { display: none; }
+
+/* dica "passe o mouse" — fora do fluxo para não deslocar o infográfico */
+.s-como-funciona .cf-hint {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + clamp(10px, 1vw, 18px));
+  transform: translateX(-50%);
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--f-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--c-text-dim);
+  transition: opacity .6s var(--ease-out);
+}
+.s-como-funciona .cf-hint-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--cf-gold);
+  box-shadow: 0 0 0 0 rgba(207, 189, 144, .6);
+  animation: cf-pulse 2.4s var(--ease-out) infinite;
+}
+@keyframes cf-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(207, 189, 144, .55); }
+  70%, 100% { box-shadow: 0 0 0 9px rgba(207, 189, 144, 0); }
+}
+.s-como-funciona.is-armed .cf-hint { display: inline-flex; }
+.s-como-funciona.is-touched .cf-hint { opacity: 0; }
+
+/* ---------- palco (desktop ≥1200) ---------- */
+.s-como-funciona .cf-frame {
+  container-type: inline-size;
+  width: min(1680px, 100%);
+  margin: clamp(48px, 4.9vw, 95px) auto 0;
+}
+.s-como-funciona .cf-stage {
+  --u: calc(100cqw / 1680);
+  position: relative;
+  height: calc(var(--u) * 830);
+}
+.s-como-funciona .cf-road-wrap {
+  position: absolute;
+  left: calc(var(--u) * 107.5);
+  top: calc(var(--u) * 100);
+  width: calc(var(--u) * 1554);
+  height: calc(var(--u) * 615);
+}
+.s-como-funciona .cf-road-shadow,
+.s-como-funciona .cf-svg {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.s-como-funciona .cf-svg { overflow: visible; }
+.s-como-funciona .cf-road-shadow { pointer-events: none; }
+
+.s-como-funciona .cf-glow,
+.s-como-funciona .cf-halo { opacity: 0; }
+.s-como-funciona .cf-node,
+.s-como-funciona .cf-stem { transition: opacity .5s var(--ease-out); }
+.s-como-funciona .cf-stage.has-active .cf-node:not(.is-active),
+.s-como-funciona .cf-stage.has-active .cf-stem:not(.is-active) { opacity: .66; }
+
+.s-como-funciona .cf-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* área de interação: círculo + haste + pino */
+.s-como-funciona .cf-hit {
+  position: absolute;
+  z-index: 2;
+  left: calc(var(--u) * (107.5 + var(--cx) - 101.5));
+  width: calc(var(--u) * 203);
+  height: calc(var(--u) * 409);
+  padding: 0;
+  border: 0;
+  border-radius: calc(var(--u) * 102);
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.s-como-funciona .cf-hit--down { top: calc(var(--u) * 305.5); }
+.s-como-funciona .cf-hit--up { top: calc(var(--u) * 100); }
+.s-como-funciona .cf-hit::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--u) * -10);
+  width: calc(var(--u) * 223);
+  height: calc(var(--u) * 223);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--cf-gold);
+  opacity: 0;
+  transition: opacity .3s var(--ease-out);
+  pointer-events: none;
+}
+.s-como-funciona .cf-hit--down::after { top: calc(var(--u) * -10); }
+.s-como-funciona .cf-hit--up::after { bottom: calc(var(--u) * -10); }
+.s-como-funciona .cf-hit:focus { outline: none; }
+.s-como-funciona .cf-hit:focus-visible::after { opacity: 1; }
+
+/* textos posicionados como no PDF */
+.s-como-funciona .cf-text {
+  position: absolute;
+  z-index: 1;
+  left: calc(var(--u) * var(--x));
+  width: calc(var(--u) * var(--w));
+  min-width: 170px;
+}
+.s-como-funciona .cf-text--low { top: calc(var(--u) * var(--y)); }
+.s-como-funciona .cf-text--up { bottom: calc(var(--u) * var(--b)); }
+
+.s-como-funciona .cf-tag {
+  display: inline-block;
+  padding: max(2px, calc(var(--u) * 4.2)) max(6px, calc(var(--u) * 15)) max(2px, calc(var(--u) * 4.4));
+  border-radius: max(2px, calc(var(--u) * 4));
+  background: var(--cf-gold);
+  color: var(--c-bg);
+  font-family: var(--f-sans);
+  font-weight: 500;
+  font-size: max(11px, calc(var(--u) * 17.6));
+  line-height: 1;
+  letter-spacing: .01em;
+  white-space: nowrap;
+}
+.s-como-funciona .cf-step-title {
+  margin: max(6px, calc(var(--u) * 9)) 0 0;
+  font-family: var(--f-display);
+  font-weight: 400;
+  font-size: max(19px, calc(var(--u) * 30));
+  line-height: 1.2;
+  color: var(--c-white);
+  white-space: nowrap;
+}
+.s-como-funciona .cf-mask { display: block; overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
+.s-como-funciona .cf-line { display: block; }
+.s-como-funciona .cf-body {
+  margin: max(10px, calc(var(--u) * 19)) 0 0;
+  font-family: var(--f-sans);
+  font-weight: 400;
+  font-size: max(13px, calc(var(--u) * 20));
+  line-height: 1.5;
+  color: var(--c-white);
+}
+
+/* ---------- vertical: mobile e tablet (≤1199) ---------- */
+@media (max-width: 1199px) {
+  .s-como-funciona { padding: 56px 0 72px; }
+  .s-como-funciona .cf-ambient { left: -60vw; top: -30vw; width: 140vw; height: 80vw; }
+  .s-como-funciona .cf-title { font-size: clamp(40px, 11.6vw, 56px); line-height: 1.12; }
+  .s-como-funciona .cf-br-m { display: inline; }
+  .s-como-funciona.is-armed .cf-hint { display: none; }
+
+  .s-como-funciona .cf-frame { margin-top: 56px; container-type: normal; }
+  .s-como-funciona .cf-stage { height: auto; }
+  .s-como-funciona .cf-road-wrap {
+    position: relative;
+    left: auto; top: auto;
+    width: min(88%, 420px);
+    height: auto;
+    aspect-ratio: 615 / 1554;
+    margin: 0 auto calc(min(88vw, 420px) * -0.3); /* recolhe a cauda-sombra da estrada */
+    container-type: inline-size;
+  }
+  /* a estrada do desktop girada 90° vira a trilha vertical do PDF mobile */
+  .s-como-funciona .cf-road-shadow,
+  .s-como-funciona .cf-svg {
+    left: 50%; top: 50%;
+    width: calc(100cqw * 1554 / 615);
+    max-width: none;
+    height: 100cqw;
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+  .s-como-funciona .cf-icon-rot { transform-box: fill-box; transform-origin: center; transform: rotate(-90deg); }
+  .s-como-funciona .cf-stems,
+  .s-como-funciona .cf-hit { display: none; }
+
+  .s-como-funciona .cf-steps {
+    position: relative;
+    max-width: 520px;
+    margin: 48px auto 0;
+    padding: 0 24px;
+    display: grid;
+    gap: 40px;
+  }
+  .s-como-funciona .cf-step { position: relative; padding-left: 38px; }
+  /* pino + haste do PDF reaproveitados como trilho da lista */
+  .s-como-funciona .cf-step::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 2px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    border: 1.5px solid var(--cf-pin);
+    background: radial-gradient(circle, var(--cf-gold) 0 4px, transparent 4.5px);
+    box-sizing: border-box;
+  }
+  .s-como-funciona .cf-step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 8.25px; top: 26px; bottom: -36px;
+    width: 1.5px;
+    background: linear-gradient(var(--cf-pin), rgba(179, 179, 179, .25));
+    transform-origin: top;
+  }
+  .s-como-funciona .cf-text { position: static; width: auto; min-width: 0; }
+  .s-como-funciona .cf-tag { padding: 4px 9px; border-radius: 3px; font-size: 12px; }
+  .s-como-funciona .cf-step-title { margin-top: 10px; font-size: 26px; white-space: normal; }
+  .s-como-funciona .cf-body { margin-top: 8px; font-size: 15px; line-height: 1.55; color: var(--c-text); text-wrap: pretty; }
+  .s-como-funciona .cf-br { display: none; }
+}
+
+@media (min-width: 640px) and (max-width: 1199px) {
+  .s-como-funciona .cf-steps { max-width: 760px; grid-template-columns: 1fr 1fr; column-gap: 48px; }
+  .s-como-funciona .cf-step::after { display: none; }
+}

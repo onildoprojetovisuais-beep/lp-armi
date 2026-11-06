@@ -1,0 +1,218 @@
+/* ==========================================================================
+   ARMI Club — Base (Fundação): reset, tipografia, utilitários globais.
+   Seções NÃO redefinem estas classes; estendem com seletor prefixado .s-<nome>.
+   ========================================================================== */
+
+/* ---------- Reset moderno ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html {
+  background: var(--c-bg);
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  scrollbar-color: rgba(207,189,144,.35) var(--c-bg);
+  scrollbar-width: thin;
+}
+html:not(.lenis) { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto !important; } }
+body {
+  min-height: 100dvh;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--f-sans);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  overflow-x: clip;
+}
+img, picture, video, canvas, svg { display: block; max-width: 100%; }
+img, video { height: auto; }
+input, button, textarea, select { font: inherit; color: inherit; }
+button { background: none; border: 0; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
+h1, h2, h3, h4, h5, h6 { font-weight: inherit; font-size: inherit; line-height: var(--lh-tight); text-wrap: balance; }
+p, li, figcaption, blockquote { text-wrap: pretty; overflow-wrap: break-word; }
+strong, b { font-weight: 700; }
+[hidden] { display: none !important; }
+:target { scroll-margin-top: 24px; }
+
+/* ---------- Seleção, foco, scrollbar ---------- */
+::selection { background: var(--c-gold); color: var(--c-ink); }
+:focus { outline: none; }
+:focus-visible { outline: 2px solid var(--c-gold); outline-offset: 4px; border-radius: 4px; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--c-bg); }
+::-webkit-scrollbar-thumb { background: rgba(207,189,144,.28); border-radius: 10px; border: 2px solid var(--c-bg); }
+::-webkit-scrollbar-thumb:hover { background: rgba(207,189,144,.5); }
+
+/* ---------- Layout ---------- */
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.container--narrow { max-width: calc(var(--container-narrow) + var(--gutter) * 2); }
+.section-pad { padding-block: var(--space-section); }
+.on-light { color: var(--c-ink); }   /* dobras claras: propósito, fundadores, depoimentos */
+
+/* ---------- Tipografia ---------- */
+.title-serif {
+  font-family: var(--f-display);
+  font-style: italic;          /* face itálica verdadeira — sem síntese */
+  font-weight: 300;
+  font-synthesis: none;
+  line-height: var(--lh-tight);
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+.title-serif--bold { font-weight: 700; letter-spacing: 0; }
+.title-gold { color: var(--c-gold); }
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .title-gold--grad {
+    background: var(--g-gold-text);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+}
+.fs-display { font-size: var(--fs-display); }
+.fs-h2 { font-size: var(--fs-h2); }
+.fs-h2-lg { font-size: var(--fs-h2-lg); }
+.fs-h3 { font-size: var(--fs-h3); }
+.fs-lead { font-size: var(--fs-lead); line-height: 1.3; }
+.fs-body { font-size: var(--fs-body); }
+.fs-small { font-size: var(--fs-small); }
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--f-eyebrow);
+  font-weight: 500;
+  font-style: normal;
+  font-size: var(--fs-eyebrow);
+  line-height: 1.35;
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--c-gold);
+  /* compensa o tracking da última letra para centralizar de verdade */
+  margin-right: calc(var(--ls-eyebrow) * -1);
+}
+
+/* ---------- Botão dourado "QUERO APLICAR" ---------- */
+.btn-gold {
+  --_shine: -120%;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6em;
+  min-height: var(--btn-h);
+  min-width: 44px;
+  padding: .55em var(--btn-px);
+  border-radius: var(--radius-sm);
+  background: var(--g-gold);
+  background-size: 130% 100%;
+  background-position: 0% 50%;
+  box-shadow: inset 0 0 0 1px rgba(255,248,230,.28), 0 0 0 0 rgba(151,117,53,0);
+  color: #fff;
+  font-family: var(--f-sans);
+  font-weight: 700;
+  font-size: var(--fs-btn);
+  line-height: 1;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow: 0 1px 1px rgba(80,58,20,.25);
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  transition:
+    transform .5s var(--ease-out),
+    box-shadow .5s var(--ease-out),
+    background-position .8s var(--ease-out);
+}
+/* varredura de brilho */
+.btn-gold::before {
+  content: "";
+  position: absolute;
+  inset: -2px auto -2px 0;
+  width: 55%;
+  z-index: -1;
+  background: linear-gradient(100deg, transparent 0%, rgba(255,250,235,.0) 20%, rgba(255,250,235,.55) 50%, rgba(255,250,235,0) 80%, transparent 100%);
+  transform: translateX(var(--_shine)) skewX(-18deg);
+  transition: transform .9s var(--ease-out);
+  pointer-events: none;
+}
+/* halo interno sutil no topo */
+.btn-gold::after {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,0) 55%);
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn-gold:hover {
+    --_shine: 260%;
+    transform: translateY(-2px);
+    background-position: 100% 50%;
+    box-shadow: inset 0 0 0 1px rgba(255,248,230,.4), var(--shadow-gold);
+  }
+}
+.btn-gold:active { transform: translateY(0) scale(.985); transition-duration: .15s; }
+.btn-gold:focus-visible {
+  outline: 2px solid var(--c-gold-soft);
+  outline-offset: 4px;
+  box-shadow: inset 0 0 0 1px rgba(255,248,230,.4), 0 0 0 6px rgba(207,189,144,.18);
+}
+.btn-gold--block { display: flex; width: 100%; }
+@media (prefers-reduced-motion: reduce) {
+  .btn-gold, .btn-gold::before { transition: none; }
+  .btn-gold:hover { transform: none; }
+}
+
+/* ---------- Linha dourada ---------- */
+.rule-gold { display: block; height: 1px; border: 0; background: var(--g-gold-line); }
+
+/* ---------- Acessibilidade ---------- */
+.sr-only {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: fixed; top: 12px; left: 12px; z-index: var(--z-modal);
+  padding: .75em 1.1em; border-radius: var(--radius-sm);
+  background: var(--c-gold); color: var(--c-ink); font-weight: 700; font-size: .95rem;
+  /* invisível até receber foco do teclado (não depende de transform, que capturas de página inteira não respeitam) */
+  opacity: 0; pointer-events: none; clip-path: inset(50%);
+  transform: translateY(-12px); transition: transform .3s var(--ease-out), opacity .3s var(--ease-out);
+}
+.skip-link:focus, .skip-link:focus-visible { opacity: 1; pointer-events: auto; clip-path: none; transform: none; }
+
+/* ---------- Reveals (estado inicial só com JS ativo e sem reduced-motion) ----------
+   O core.js anima até o estado final e adiciona .is-revealed. Sem JS: tudo visível. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal]:not(.is-revealed) { opacity: 0; }
+  html.js [data-reveal="fade-up"]:not(.is-revealed) { transform: translate3d(0, 28px, 0); }
+  html.js [data-reveal="scale"]:not(.is-revealed) { transform: scale(.94); }
+  html.js [data-reveal="mask"]:not(.is-revealed) { opacity: 1; clip-path: inset(0 0 100% 0); }
+  html.js [data-reveal-group]:not(.is-revealed) > * { opacity: 0; transform: translate3d(0, 24px, 0); }
+  html.js [data-split]:not(.is-split):not(.is-revealed) { opacity: 0; }
+}
+/* linhas geradas por [data-split] */
+.split-line { display: block; overflow: hidden; padding-bottom: .12em; margin-bottom: -.12em; }
+.split-line > .split-inner { display: inline-block; will-change: transform; }
+/* evita corte de descendentes/itálico à direita */
+.split-line { padding-inline: .06em; margin-inline: -.06em; }
+
+/* Integração: nada de rolagem horizontal mesmo durante entradas com scale/translate (clip não cria contêiner de rolagem, sticky/pin seguem funcionando) */
+main { overflow-x: clip; }

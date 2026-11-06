@@ -1,0 +1,309 @@
+/* ==========================================================================
+   01 · HERO — composição medida no PDF (desktop 1920 / mobile 375).
+   --u = 1px do layout original. Limitado também pela altura da tela para
+   garantir o botão na primeira dobra (botão termina em 866u desktop / 641u mobile).
+   ========================================================================== */
+.s-hero {
+  --u: min(calc(min(100vw, 600px) / 375), calc((100svh - 24px) / 641));
+  position: relative;
+  background: var(--c-bg);
+  color: var(--c-text);
+  overflow: clip;
+  isolation: isolate;
+}
+.s-hero__frame {
+  position: relative;
+  width: calc(375 * var(--u));
+  margin-inline: auto;
+  padding-bottom: calc(54 * var(--u));
+}
+
+/* ---------- Arte (casal + AR) ---------- */
+.s-hero__art {
+  position: absolute;
+  z-index: 0;
+  left: 0; top: 0;
+  width: calc(375 * var(--u));
+  pointer-events: none;
+}
+.s-hero__art-move { position: relative; will-change: transform; }
+.s-hero__art-img { width: 100%; height: auto; }
+
+/* ---------- Selos de vidro (Adriana / Rodrigão) ---------- */
+.s-hero__badge {
+  --b-w: 117.5; --b-h: 32; --b-pad: 18.8; --b-av: 23.5; --b-gap: 3.6; --b-name: 5.5; --b-handle: 4;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--b-gap) * var(--u));
+  width: calc(var(--b-w) * var(--u));
+  height: calc(var(--b-h) * var(--u));
+  padding-left: calc(var(--b-pad) * var(--u));
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.42);
+  background: linear-gradient(180deg, rgba(14,16,22,.22), rgba(6,8,12,.32));
+  -webkit-backdrop-filter: blur(12px) saturate(1.15);
+  backdrop-filter: blur(12px) saturate(1.15);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+  overflow: hidden;
+  font-family: var(--f-sans);
+  white-space: nowrap;
+}
+/* brilho de vidro que varre o selo */
+.s-hero__badge::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.14) 48%, transparent 66%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+.s-hero__badge.is-shine::after { animation: s-hero-shine 1.6s var(--ease-out) forwards; }
+@keyframes s-hero-shine { to { transform: translateX(120%); } }
+
+.s-hero__badge--adriana { left: calc(14 * var(--u)); top: calc(235.7 * var(--u)); }
+.s-hero__badge--rodrigao { --b-w: 123.2; --b-h: 33.7; --b-pad: 20.6; --b-gap: 3; left: calc(238.6 * var(--u)); top: calc(202 * var(--u)); }
+.s-hero__avatar {
+  flex: none;
+  width: calc(var(--b-av) * var(--u));
+  height: calc(var(--b-av) * var(--u));
+  border-radius: 50%;
+}
+.s-hero__badge-txt { display: flex; flex-direction: column; line-height: 1.15; }
+.s-hero__badge-name {
+  display: inline-flex; align-items: center; gap: .3em;
+  font-weight: 700;
+  font-size: calc(var(--b-name) * var(--u));
+  color: #fff;
+  letter-spacing: -.005em;
+}
+.s-hero__verified { width: 1.05em; height: 1.05em; flex: none; }
+.s-hero__badge-handle {
+  margin-top: .35em;
+  font-weight: 400;
+  font-size: calc(var(--b-handle) * var(--u));
+  color: #a7a7a7;
+}
+
+/* ---------- Conteúdo ---------- */
+.s-hero__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: calc(27.4 * var(--u));
+}
+.s-hero__logo {
+  width: calc(55 * var(--u));
+  height: auto;
+}
+.s-hero__title {
+  margin-top: calc(236.8 * var(--u));
+  font-size: calc(35 * var(--u));
+  line-height: calc(42.5 * var(--u));
+  letter-spacing: -.004em;
+  text-wrap: nowrap;
+}
+.s-hero__lines { display: block; }
+.s-hero__ln {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  /* folga p/ itálico e descendentes não serem cortados pela máscara */
+  padding: 0 .08em .14em;
+  margin: 0 -.08em -.14em;
+}
+.s-hero__ln-i { display: inline-block; }
+
+.s-hero__sub {
+  margin-top: calc(16 * var(--u));
+  font-family: var(--f-sans);
+  font-weight: 400;
+  font-size: calc(17.8 * var(--u));
+  line-height: calc(22.25 * var(--u));
+  color: #fbf7ee;
+  white-space: nowrap;
+  text-wrap: nowrap;
+}
+.s-hero__br-d { display: none; }
+
+.s-hero__cta { margin-top: calc(18 * var(--u)); }
+.s-hero .s-hero__btn {
+  width: calc(184 * var(--u));
+  min-height: max(44px, calc(40 * var(--u)));
+  padding: 0;
+  font-size: calc(17.1 * var(--u));
+  border-radius: calc(5 * var(--u));
+}
+
+/* ---------- Card de vídeo ---------- */
+.s-hero__video {
+  position: relative;
+  z-index: 2;
+  margin-top: calc(50 * var(--u));
+  padding-inline: calc(24 * var(--u));
+}
+.s-hero__video-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 327 / 186;
+  padding: 0;
+  border-radius: calc(8 * var(--u));
+  overflow: hidden;
+  background: var(--c-surface);
+  box-shadow: 0 30px 70px -30px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.05);
+  cursor: pointer;
+  isolation: isolate;
+}
+.s-hero__video-card::after { /* véu escuro do layout */
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(8,15,24,.18), rgba(8,15,24,.38));
+  transition: opacity .6s var(--ease-out);
+  z-index: 1;
+}
+.s-hero__video-thumb {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s var(--ease-out);
+}
+.s-hero__play {
+  position: absolute;
+  z-index: 2;
+  left: 50%; top: 50%;
+  width: calc(37 * var(--u));
+  height: calc(37 * var(--u));
+  min-width: 36px; min-height: 36px;
+  translate: -50% -50%;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,.2);
+  border: 1.5px solid rgba(255,255,255,.9);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: scale .6s var(--ease-out), background-color .6s var(--ease-out);
+}
+.s-hero__play svg { width: 44%; height: 44%; margin-left: 6%; }
+.s-hero__play::before { /* pulso discreto */
+  content: "";
+  position: absolute; inset: -1.5px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.55);
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .s-hero__play::before { animation: s-hero-pulse 2.8s var(--ease-out) infinite; }
+}
+@keyframes s-hero-pulse {
+  0% { transform: scale(1); opacity: .7; }
+  70%, 100% { transform: scale(1.55); opacity: 0; }
+}
+@media (hover: hover) and (pointer: fine) {
+  .s-hero__video-card:hover .s-hero__video-thumb { transform: scale(1.035); }
+  .s-hero__video-card:hover::after { opacity: .7; }
+  .s-hero__video-card:hover .s-hero__play { scale: 1.08; background-color: rgba(255,255,255,.3); }
+}
+.s-hero__video-card:focus-visible { outline: 2px solid var(--c-gold); outline-offset: 5px; }
+.s-hero__video-card.is-novideo { cursor: default; }
+
+/* ---------- Modal do vídeo ---------- */
+.s-hero__modal {
+  width: min(1100px, calc(100vw - 32px));
+  max-width: none; max-height: none;
+  padding: 0; border: 0;
+  background: transparent;
+  color: var(--c-text);
+  overflow: visible;
+}
+.s-hero__modal::backdrop {
+  background: rgba(4,7,12,.82);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.s-hero__modal-box { position: relative; }
+.s-hero__modal-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 40px 120px -30px rgba(0,0,0,.9), 0 0 0 1px rgba(207,189,144,.25);
+}
+.s-hero__modal-media iframe,
+.s-hero__modal-media video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.s-hero__modal-close {
+  position: absolute;
+  right: 0; bottom: calc(100% + 12px);
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  color: var(--c-text);
+  border: 1px solid rgba(255,255,255,.3);
+  background: rgba(255,255,255,.06);
+  transition: background-color .3s, border-color .3s, transform .4s var(--ease-out);
+}
+.s-hero__modal-close svg { width: 20px; height: 20px; }
+.s-hero__modal-close:hover { background: rgba(207,189,144,.18); border-color: var(--c-gold); transform: rotate(90deg); }
+
+/* ---------- Estado inicial da entrada (só com JS e sem reduced-motion) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .s-hero:not(.is-ready) .s-hero__logo,
+  html.js .s-hero:not(.is-ready) .s-hero__sub,
+  html.js .s-hero:not(.is-ready) .s-hero__cta,
+  html.js .s-hero:not(.is-ready) .s-hero__art,
+  html.js .s-hero:not(.is-ready) .s-hero__video { opacity: 0; }
+  html.js .s-hero:not(.is-ready) .s-hero__ln-i { transform: translateY(115%); }
+}
+
+/* ---------- Tablet (mesma composição do mobile, ampliada até 600px) ---------- */
+
+/* ---------- Desktop ---------- */
+@media (min-width: 1024px) {
+  .s-hero { --u: min(calc(min(100vw, 1920px) / 1920), calc((100svh - 24px) / 866)); }
+  .s-hero__frame { width: calc(1920 * var(--u)); padding-bottom: calc(89 * var(--u)); }
+
+  .s-hero__art { left: calc(900 * var(--u)); width: calc(1020 * var(--u)); }
+
+  .s-hero__badge { --b-w: 302; --b-h: 83; --b-pad: 48.5; --b-av: 60; --b-gap: 9.5; --b-name: 13.4; --b-handle: 9.8; }
+  .s-hero__badge--adriana { left: calc(139 * var(--u)); top: calc(477 * var(--u)); }
+  .s-hero__badge--rodrigao { --b-w: 302; --b-h: 83; --b-pad: 48.5; --b-gap: 9.5; left: calc(612 * var(--u)); top: calc(606 * var(--u)); }
+  .s-hero__badge { border-color: rgba(255,255,255,.38); }
+
+  .s-hero__content {
+    align-items: flex-start;
+    text-align: left;
+    padding-top: calc(84.1 * var(--u));
+    padding-left: calc(320 * var(--u));
+  }
+  .s-hero__logo { width: calc(171.4 * var(--u)); margin-left: calc(22.8 * var(--u)); }
+  .s-hero__title {
+    margin-top: calc(52.8 * var(--u));
+    font-size: calc(74.8 * var(--u));
+    line-height: calc(91 * var(--u));
+  }
+  .s-hero__sub {
+    margin-top: calc(24.8 * var(--u));
+    font-size: calc(30 * var(--u));
+    line-height: calc(39 * var(--u));
+  }
+  .s-hero__br-d { display: inline; }
+  .s-hero__br-m { display: none; }
+  .s-hero__cta { margin-top: calc(53 * var(--u)); }
+  .s-hero .s-hero__btn {
+    width: calc(356 * var(--u));
+    min-height: max(44px, calc(63 * var(--u)));
+    font-size: calc(26.7 * var(--u));
+    border-radius: calc(7 * var(--u));
+  }
+
+  .s-hero__video { margin-top: calc(101 * var(--u)); padding-inline: 0; }
+  .s-hero__video-card {
+    width: calc(1024 * var(--u));
+    margin-inline: auto;
+    aspect-ratio: 1024 / 582;
+    border-radius: calc(16 * var(--u));
+  }
+  .s-hero__play { width: calc(114 * var(--u)); height: calc(114 * var(--u)); border-width: 2px; }
+}

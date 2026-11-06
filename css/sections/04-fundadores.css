@@ -1,0 +1,230 @@
+/* 04 — Fundadores (Adriana Sant’Anna e Rodrigo Simoni) + card de vidro "ARMI CLUB"
+   --u = 1px de design do PDF desktop (1920) na viewport atual. */
+.s-fundadores {
+  --u: calc(min(100vw, 1920px) / 1920);
+  position: relative;
+  z-index: 2; /* a cabeça do Rodrigo sobe por cima do fim da dobra dos pilares */
+  color: var(--c-ink);
+}
+
+/* ---------- palco branco ---------- */
+.s-fundadores__stage {
+  position: relative;
+  min-height: calc(1115 * var(--u));
+  background: var(--c-white);
+}
+.s-fundadores__hex {
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: calc(1255 * var(--u));
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='216' height='124.71' viewBox='0 0 216 124.71'%3E%3Cpath d='M0 62.35L36 0H108L144 62.35L108 124.71H36ZM144 62.35H216' fill='none' stroke='%23d9cba3' stroke-opacity='.32' stroke-width='1.3'/%3E%3C/svg%3E");
+  background-size: calc(216 * var(--u)) calc(124.71 * var(--u));
+  background-position: calc(-40 * var(--u)) calc(-20 * var(--u));
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, rgba(0,0,0,.85) 45%, rgba(0,0,0,.25) 78%, transparent 92%);
+          mask-image: linear-gradient(90deg, #000 0%, rgba(0,0,0,.85) 45%, rgba(0,0,0,.25) 78%, transparent 92%);
+  pointer-events: none;
+}
+
+/* ---------- foto (painel cinza + faixa dourada + recorte do casal) ---------- */
+.s-fundadores__media {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  top: calc(-90 * var(--u)); /* espaço para a cabeça que passa do topo */
+  pointer-events: none;
+}
+.s-fundadores__panel {
+  position: absolute;
+  top: calc(90 * var(--u)); bottom: 0; right: 0;
+  left: calc(1275 * var(--u));
+  background:
+    radial-gradient(70% 45% at 70% 30%, rgba(255,255,255,.22), rgba(255,255,255,0) 70%),
+    linear-gradient(180deg, #bebdbb 0%, #c6c6c5 40%, #c2c2c2 75%, #bdbdbd 100%);
+}
+.s-fundadores__stripe {
+  position: absolute;
+  top: calc(90 * var(--u)); bottom: 0;
+  left: calc(1255 * var(--u));
+  width: calc(20 * var(--u));
+  background: #d0be90;
+}
+.s-fundadores__photo {
+  position: absolute;
+  bottom: -2.2%; /* sobra escondida sob a faixa escura para o parallax não abrir fresta */
+  left: calc(995 * var(--u));
+  width: calc(862.5 * var(--u));
+  aspect-ratio: 1344 / 1874;
+}
+.s-fundadores__img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; will-change: transform; }
+
+/* ---------- textos ---------- */
+.s-fundadores__text {
+  position: relative;
+  z-index: 1;
+  /* a coluna de texto nunca passa de x≈985 (onde começa o braço da Adriana) */
+  width: min(calc(320 * var(--u) + max(390px, calc(670 * var(--u)))), calc(985 * var(--u)));
+  padding: calc(52 * var(--u)) 0 calc(150 * var(--u)) calc(320 * var(--u));
+}
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .s-fundadores__text { width: calc(975 * var(--u)); padding-left: calc(150 * var(--u)); }
+}
+.s-fundadores__person + .s-fundadores__person { margin-top: max(28px, calc(48 * var(--u))); }
+.s-fundadores__name {
+  margin: 0 0 max(18px, calc(30 * var(--u)));
+  font-family: var(--f-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: max(44px, calc(84.7 * var(--u)));
+  line-height: 1.04;
+  letter-spacing: -0.012em;
+  color: var(--c-ink);
+  white-space: nowrap;
+}
+.s-fundadores__mask { display: block; overflow: hidden; padding: .04em .1em .16em; margin: -.04em -.1em -.16em; }
+.s-fundadores__line { display: block; }
+.s-fundadores__lead,
+.s-fundadores__p {
+  margin: 0;
+  font-family: var(--f-sans);
+  font-weight: 400;
+  font-size: max(16px, calc(25 * var(--u)));
+  line-height: 1.52;
+  color: var(--c-ink);
+  text-wrap: pretty;
+}
+.s-fundadores__p { margin-top: 1.52em; }
+.s-fundadores__p--tight { margin-top: 0; }
+
+/* ---------- faixa escura + card de vidro ----------
+   A faixa escura sob o card pertence a esta seção e é opaca (não depende da 05).
+   Ela reproduz o mesmo degradê do topo da dobra seguinte e "devolve" a própria altura
+   com margem negativa, para a 05 começar exatamente na borda do branco, como no PDF. */
+.s-fundadores__base {
+  --base-h: calc(190 * var(--u));
+  display: flow-root; /* evita colapso da margem negativa do card */
+  position: relative;
+  z-index: 3;
+  height: var(--base-h);
+  margin-bottom: calc(-1 * var(--base-h));
+  padding: 0 var(--gutter);
+  background:
+    radial-gradient(60% 520px at 0% 0%, rgba(150, 146, 124, .55), rgba(150, 146, 124, 0) 70%),
+    radial-gradient(55% 480px at 100% 0%, rgba(120, 120, 112, .45), rgba(120, 120, 112, 0) 70%),
+    linear-gradient(180deg, #2a2d2b 0px, #151b22 calc(260 * var(--u)), var(--c-bg) calc(520 * var(--u)), var(--c-bg) 100%);
+}
+.s-fundadores__card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  max-width: calc(1280 * var(--u));
+  height: calc(259 * var(--u));
+  min-height: 150px;
+  margin: calc(-91 * var(--u)) auto 0;
+  border-radius: max(10px, calc(16 * var(--u)));
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: calc(70 * var(--u));
+  background: linear-gradient(180deg, rgba(14, 18, 26, .16) 0%, rgba(14, 18, 26, .3) 32%, rgba(8, 15, 24, .55) 70%, rgba(8, 15, 24, .7) 100%);
+  -webkit-backdrop-filter: blur(22px) saturate(1.05);
+          backdrop-filter: blur(22px) saturate(1.05);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .28),
+    inset 0 0 0 1px rgba(255, 255, 255, .08),
+    0 24px 60px -18px rgba(0, 0, 0, .6);
+}
+.s-fundadores__sheen {
+  position: absolute;
+  top: -20%; bottom: -20%;
+  left: 0;
+  width: 38%;
+  z-index: -1;
+  background: linear-gradient(100deg, rgba(227, 212, 171, 0) 0%, rgba(227, 212, 171, .16) 42%, rgba(255, 246, 220, .3) 50%, rgba(227, 212, 171, .16) 58%, rgba(227, 212, 171, 0) 100%);
+  transform: translateX(-120%) skewX(-16deg);
+  pointer-events: none;
+}
+.s-fundadores__logo {
+  display: block;
+  width: max(220px, calc(384 * var(--u)));
+  height: auto;
+  overflow: visible;
+}
+.s-fundadores__letter { fill: var(--c-gold); }
+.s-fundadores__club { fill: #d9d9d9; }
+
+/* ---------- sem backdrop-filter: vidro opaco ---------- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .s-fundadores__card { background: linear-gradient(180deg, #8d8f93 0%, #2a2f37 38%, #0d131c 100%); }
+}
+
+/* ---------- tablet e mobile: empilhado (PDF mobile) ---------- */
+@media (max-width: 1023px) {
+  .s-fundadores__stage {
+    min-height: 0;
+    background: var(--c-light);
+    display: flex;
+    flex-direction: column;
+  }
+  .s-fundadores__hex { display: none; }
+  .s-fundadores__text {
+    order: 1;
+    width: auto;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 22px 24px 0;
+    text-align: center;
+  }
+  .s-fundadores__person + .s-fundadores__person { margin-top: 40px; }
+  .s-fundadores__name { font-size: clamp(36px, 11.4vw, 52px); margin-bottom: 26px; line-height: 1.1; white-space: normal; text-wrap: balance; }
+  .s-fundadores__lead, .s-fundadores__p { font-size: 16px; line-height: 1.375; }
+  .s-fundadores__lead { font-weight: 700; }
+  .s-fundadores__p, .s-fundadores__p--tight { margin-top: 1.375em; }
+
+  .s-fundadores__media {
+    order: 2;
+    position: relative;
+    inset: auto;
+    width: 100%;
+    max-width: 620px;
+    margin: 75px auto 0;
+    aspect-ratio: 375 / 463;
+  }
+  .s-fundadores__panel {
+    top: 14px; left: 0;
+    background:
+      linear-gradient(90deg, rgba(96, 90, 84, .9) 0%, rgba(120, 115, 110, .55) 14%, rgba(170, 168, 165, 0) 42%),
+      linear-gradient(180deg, #b6b5b3 0%, #c3c2c0 45%, #c2c2c2 100%);
+  }
+  .s-fundadores__stripe { top: 0; left: 0; right: 0; width: auto; height: 14px; }
+  .s-fundadores__photo { left: -3.84%; width: 101.3%; }
+
+  .s-fundadores__base {
+    height: auto;
+    margin-bottom: 0;
+    padding: 0 0 40px;
+    background:
+      radial-gradient(90% 320px at 0% 0%, rgba(150, 146, 124, .28), rgba(150, 146, 124, 0) 70%),
+      linear-gradient(180deg, #1d2226 0px, var(--c-bg) 360px);
+  }
+  .s-fundadores__card {
+    max-width: 572px;
+    width: calc(100% - 48px);
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 327 / 128;
+    margin-top: -64px;
+    border-radius: 6px;
+    padding-top: 0;
+    align-items: center;
+  }
+  .s-fundadores__logo { width: 57.5%; transform: translateY(-4%); }
+}
+
+/* mobile: mesma devolução de altura (card sobra ~19vw abaixo da foto; a 05 abre com ~28vw de respiro) */
+@media (max-width: 767px) {
+  .s-fundadores__base {
+    --base-h: 23vw;
+    height: var(--base-h);
+    margin-bottom: calc(-1 * var(--base-h));
+    padding-bottom: 0;
+  }
+}
