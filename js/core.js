@@ -28,6 +28,28 @@
   const hasGSAP = () => !!(window.gsap && window.ScrollTrigger);
 
   // ------------------------------------------------------------------
+  // Toque: espera a rolagem parar antes de mexer em scroll/refresh.
+  // No iOS, scrollTo() ou ScrollTrigger.refresh() durante a inércia do dedo
+  // cancela o movimento e a página "volta ao topo" com parallax descalibrado.
+  // ------------------------------------------------------------------
+  let touching = false, lastScroll = 0;
+  if (isTouch) {
+    window.addEventListener('touchstart', () => { touching = true; }, { passive: true });
+    const up = () => { touching = false; lastScroll = performance.now(); };
+    window.addEventListener('touchend', up, { passive: true });
+    window.addEventListener('touchcancel', up, { passive: true });
+    window.addEventListener('scroll', () => { lastScroll = performance.now(); }, { passive: true });
+  }
+  function whenIdle(fn) {
+    if (!isTouch) { fn(); return; }
+    const check = () => {
+      if (touching || performance.now() - lastScroll < 250) setTimeout(check, 120);
+      else fn();
+    };
+    check();
+  }
+
+  // ------------------------------------------------------------------
   // Scroll suave (Lenis) — desligado em reduced-motion e em touch
   // ------------------------------------------------------------------
   function initLenis() {
@@ -272,7 +294,7 @@
   function initRefresh() {
     if (!hasGSAP()) return;
     let t;
-    const refresh = () => { clearTimeout(t); t = setTimeout(() => ScrollTrigger.refresh(), 120); };
+    const refresh = () => { clearTimeout(t); t = setTimeout(() => whenIdle(() => ScrollTrigger.refresh()), 120); };
     window.addEventListener('load', refresh);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(refresh);
     document.querySelectorAll('img[loading="lazy"]').forEach(img => { if (!img.complete) img.addEventListener('load', refresh, { once: true }); });
@@ -282,7 +304,8 @@
     if (hasGSAP()) {
       gsap.registerPlugin(ScrollTrigger);
       gsap.defaults({ ease: EASE, duration: DUR });
-      if (isTouch) ScrollTrigger.config({ ignoreMobileResize: true });
+      // no toque, o refresh do evento "load" fica por conta do initRefresh (que espera a rolagem parar)
+      if (isTouch) ScrollTrigger.config({ ignoreMobileResize: true, autoRefreshEvents: 'visibilitychange,DOMContentLoaded,resize' });
     }
     initLenis();
     if (ARMI.lenis) doc.classList.add('has-lenis');
@@ -326,7 +349,7 @@
     // split espera as fontes para medir linhas com a fonte certa
     const main = document.getElementById('main');
     if (main) { try { glueShortWords(main); } catch (err) { /* nunca bloqueia */ } }
-    const go = () => atTop(() => { initReveals(); initRefresh(); });
+    const go = () => whenIdle(() => atTop(() => { initReveals(); initRefresh(); }));
     if (document.fonts && document.fonts.status !== 'loaded' && !reduced) {
       Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1200))]).then(go);
     } else go();
